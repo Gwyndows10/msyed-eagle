@@ -15,12 +15,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-
-const login = (event) => {
-  event.preventDefault(); // Prevent form submission
-  const router = useRouter();
-  router.push("admin"); // Navigate to /admin
-};
 export default function Home() {
   
 const login = () => { // Prevent form submission
