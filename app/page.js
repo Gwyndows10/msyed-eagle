@@ -15,9 +15,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export default function page() {
+export default function Page() {
   
-const login = () => { // Prevent form submission
+const login = (event) => { 
+  event.preventDefault();// Prevent form submission
   const router = useRouter();
   router.push("admin"); // Navigate to /admin
 };
@@ -48,7 +49,7 @@ const login = () => { // Prevent form submission
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-            onClick={() => login}
+            onClick={(event) => login(event)}
           >
             Log In
           </button>
