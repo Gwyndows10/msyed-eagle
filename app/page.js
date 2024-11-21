@@ -22,6 +22,11 @@ const login = (event) => {
   router.push("admin"); // Navigate to /admin
 };
 export default function Home() {
+  
+const login = () => { // Prevent form submission
+  const router = useRouter();
+  router.push("admin"); // Navigate to /admin
+};
   return (
     <div
       className={`${geistSans.variable} ${geistMono.variable} flex items-center justify-center min-h-screen bg-gray-100 p-6`}
@@ -49,7 +54,7 @@ export default function Home() {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-            onClick={(event) => login(event)}
+            onClick={() => login}
           >
             Log In
           </button>
