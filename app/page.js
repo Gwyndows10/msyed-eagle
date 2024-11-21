@@ -16,10 +16,11 @@ const geistMono = localFont({
 });
 
 
-const login = () => {
+const login = (event) => {
+  event.preventDefault(); // Prevent form submission
   const router = useRouter();
-  router.push("admin");
-}
+  router.push("admin"); // Navigate to /admin
+};
 export default function Home() {
   return (
     <div
@@ -48,7 +49,7 @@ export default function Home() {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-            onClick={login}
+            onClick={(event) => login(event)}
           >
             Log In
           </button>
