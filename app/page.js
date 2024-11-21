@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import localFont from "next/font/local";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,12 +16,13 @@ const geistMono = localFont({
 });
 
 export default function Page() {
-  
-const login = (event) => { 
-  event.preventDefault();// Prevent form submission
-  const router = useRouter();
-  router.push("admin"); // Navigate to /admin
-};
+  const router = useRouter(); // Move useRouter here
+
+  const login = (event) => {
+    event.preventDefault(); // Prevent form submission
+    router.push("admin"); // Navigate to /admin
+  };
+
   return (
     <div
       className={`${geistSans.variable} ${geistMono.variable} flex items-center justify-center min-h-screen bg-gray-100 p-6`}
