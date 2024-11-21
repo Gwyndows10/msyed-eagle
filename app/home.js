@@ -15,7 +15,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export default function page() {
+export default function Home() {
   
 const login = () => { // Prevent form submission
   const router = useRouter();
