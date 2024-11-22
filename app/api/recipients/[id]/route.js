@@ -9,10 +9,10 @@ export async function PUT(request, { params }){
     await Recipient.findByIdAndUpdate(id, {fullName, ID});
     return NextResponse.json({message: "recipient updated"}, {status: 200});
 }
-/*
+
 export async function GET(request, {params}){
     const {id} = await params;
     await connectMongoDB();
-    const recipient = await Recipient.findOne({_id:id});
+    const recipient = await Recipient.findOne({_id: id});
     return NextResponse.json({recipient}, {status: 200})
-}*/
+}
