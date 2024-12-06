@@ -4,6 +4,10 @@ const recipientSchema = new Schema(
     {
         fullName: String,
         ID: String,
+        emailAddress: String,
+        gender: Number,
+        dateOfBirth: String,
+        registrationDate: String,
     }, 
     {
         timestamps: true,
