@@ -11,7 +11,7 @@ export default function Admin() {
     // Fetch all users from the backend
     const fetchUsers = async () => {
       try {
-        const response = await fetch("/api/recipients/[id]"); // Adjust the endpoint to match your backend route
+        const response = await fetch("/api/recipients"); // Adjust the endpoint to match your backend route
         if (!response.ok) {
           throw new Error("Failed to fetch users");
         }
