@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchRecipients } from "@/utils/fetchHelpers";
 import { useEffect, useState } from "react";
 
 export default function Admin() {
@@ -11,12 +12,8 @@ export default function Admin() {
     // Fetch all users from the backend
     const fetchUsers = async () => {
       try {
-        const response = await fetch("/api/recipients"); // Adjust the endpoint to match your backend route
-        if (!response.ok) {
-          throw new Error("Failed to fetch users");
-        }
-        const data = await response.json();
-        setUsers(data.recipients); // Assuming the API returns a `recipients` array
+        const recipients = await fetchRecipients();
+        setUsers(recipients); 
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -54,7 +51,7 @@ export default function Admin() {
           <a href="#" className="block p-2 text-lg bg-gray-700 rounded-md">
             Dashboard
           </a>
-          <a href="users" className="block p-2 text-lg text-gray-300 hover:bg-gray-700 rounded-md">
+          <a href="/users" className="block p-2 text-lg text-gray-300 hover:bg-gray-700 rounded-md">
             Users
           </a>
         </nav>
