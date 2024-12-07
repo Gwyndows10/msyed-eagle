@@ -2,7 +2,8 @@
 
 import { fetchRecipients } from "@/utils/fetchHelpers";
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/sidebar";
+import Sidebar from "../../components/Sidebar";
+
 export default function Admin() {
   const [users, setUsers] = useState([]); // State to store user data
   const [loading, setLoading] = useState(true); // Loading state
