@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import localFont from "next/font/local";
+//import dotenv from '../../dotenv';
+//dotenv.config();
 import { useState } from "react"; // For managing email and password state
 import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
@@ -14,7 +16,7 @@ import { createClient } from "@supabase/supabase-js";
 // Initialize Supabase client
 const supabase = createClient(
   "https://cyxgqrgyujznalficjmt.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5eGdxcmd5dWp6bmFsZmljam10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM1NTA0MDcsImV4cCI6MjA0OTEyNjQwN30.TBOyIjitewhSDxEHqDavgOsyfL978KT6jcjgxzZ3D6w" // Ensure this key is available in your environment
+   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5eGdxcmd5dWp6bmFsZmljam10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM1NTA0MDcsImV4cCI6MjA0OTEyNjQwN30.TBOyIjitewhSDxEHqDavgOsyfL978KT6jcjgxzZ3D6w" // Ensure this key is available in your environment
 );
 
 export default function Login() {

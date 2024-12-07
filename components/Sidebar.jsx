@@ -7,18 +7,18 @@ export default function Sidebar() {
               U
             </div>
             <div>
-              <h2 className="text-lg font-medium">Musab</h2>
-              <p className="text-gray-400 text-sm">musab@gmail.com</p>
+              <h2 className="text-lg font-medium">John</h2>
+              <p className="text-gray-400 text-sm">johnsmith@gmail.com</p>
             </div>
           </div>
         </div>
         <nav className="space-y-4">
-          <a href="/admin" className="block p-2 text-lg bg-gray-700 rounded-md">
+          <a href="/admin" className="block p-2 text-lg hover:bg-gray-700 rounded-md">
             Dashboard
           </a>
           <a
             href="/users"
-            className="block p-2 text-lg text-gray-300 hover:bg-gray-700 rounded-md"
+            className="block p-2 text-lg hover:bg-gray-700 rounded-md"
           >
             Users
           </a>
