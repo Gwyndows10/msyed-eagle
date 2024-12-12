@@ -8,6 +8,7 @@ const recipientSchema = new Schema(
         gender: Number,
         dateOfBirth: String,
         registrationDate: String,
+        tookFood: Boolean,
     }, 
     {
         timestamps: true,

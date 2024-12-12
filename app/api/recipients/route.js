@@ -6,9 +6,9 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
     const data = await request.json();
     console.log("Incoming Request Data:", data);
-    const { fullName, ID, emailAddress, gender, dateOfBirth, registrationDate } = data;
+    const { fullName, ID, emailAddress, gender, dateOfBirth, registrationDate, tookFood } = data;
     await connectMongoDB();
-    await Recipient.create({ fullName, ID, emailAddress, gender, dateOfBirth, registrationDate});
+    await Recipient.create({ fullName, ID, emailAddress, gender, dateOfBirth, registrationDate, tookFood});
     return NextResponse.json({ message: "Recipient Added" }, { status: 201 });
 } 
 
