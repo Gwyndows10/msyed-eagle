@@ -20,7 +20,8 @@ export default function Page() {
 
   const login = (event) => {
     event.preventDefault(); // Prevent form submission
-    router.push("admin"); // Navigate to /admin
+    router.push("admin");
+    console.log(process.env); // Navigate to /admin
   };
 
   return (

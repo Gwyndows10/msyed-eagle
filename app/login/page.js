@@ -6,18 +6,16 @@ import localFont from "next/font/local";
 //dotenv.config();
 import { useState } from "react"; // For managing email and password state
 import { useRouter } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../supabaseSetup";
+
+
 
 // Load custom fonts
 
 
 
 
-// Initialize Supabase client
-const supabase = createClient(
-  "https://cyxgqrgyujznalficjmt.supabase.co",
-   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5eGdxcmd5dWp6bmFsZmljam10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM1NTA0MDcsImV4cCI6MjA0OTEyNjQwN30.TBOyIjitewhSDxEHqDavgOsyfL978KT6jcjgxzZ3D6w" // Ensure this key is available in your environment
-);
+
 
 export default function Login() {
   const router = useRouter();
@@ -63,7 +61,7 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)} // Update email state
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300 text-black"
             required
           />
           <input
@@ -71,12 +69,12 @@ export default function Login() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)} // Update password state
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300 text-black"
             required
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition "
           >
             Log In
           </button>
