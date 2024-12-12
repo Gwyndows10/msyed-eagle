@@ -42,6 +42,7 @@ export default function Lock({ showUI }) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
+        router.push("login")
       }
     });
 
