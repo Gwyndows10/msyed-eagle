@@ -2,28 +2,19 @@
 
 import { fetchRecipients } from "@/utils/fetchHelpers";
 import { useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../components/Sidebar";
 
 export default function Admin() {
   const [users, setUsers] = useState([]); // State to store user data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
-  const [searchParams, setSearchParams] = useState({
-    name: "",
-    id: "",
-    gender: "",
-    registrationDate: "",
-  }); // State for search parameters
-
-  const [searchQuery, setSearchQuery] = useState(""); // State for the query URL
 
   useEffect(() => {
-    // Fetch users based on the search query
+    // Fetch all users from the backend
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`/api/recipients${searchQuery}`);
-        const data = await response.json();
-        setUsers(data.recipients || []);
+        const recipients = await fetchRecipients();
+        setUsers(recipients);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -32,30 +23,7 @@ export default function Admin() {
     };
 
     fetchUsers();
-  }, [searchQuery]); // Re-run whenever the search query changes
-
-  const handleSearchChange = (e) => {
-    const { name, value } = e.target;
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      [name]: value,
-    }));
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    let query = "?";
-
-    
-    Object.keys(searchParams).forEach((key) => {
-      if (searchParams[key]) {
-        query += `${key}=${searchParams[key]}&`;
-      }
-    });
-
-    
-    setSearchQuery(query.slice(0, -1));
-  };
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -65,6 +33,11 @@ export default function Admin() {
     return <div>Error: {error}</div>;
   }
 
+  /*const getGender = (gender) => {
+    if (gender === 0) return "Male";
+    if (gender === 1) return "Female";
+    return "N/A"; 
+  };*/
   const toggleTookFood = async (userId, currentStatus) => {
     try {
       const response = await fetch(`/api/recipients/${userId}`, {
@@ -86,20 +59,19 @@ export default function Admin() {
       console.error(err);
     }
   };
-
   const returnNotFound = (field) => {
-    return field ?? "N/A";
+    //console.log(field);
+    return field ?? "N/A"; 
   };
-
   const formatDate = (dateString) => {
+    console.log("Raw date string:", dateString);
     const date = new Date(dateString);
+    console.log("Formatted date:", date.toLocaleDateString()); 
     return date.toLocaleDateString();
   };
-
   const areufingserious = (tookFood) => {
     return tookFood ? "Yes" : "No";
   };
-
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       {/* Sidebar */}
@@ -108,49 +80,6 @@ export default function Admin() {
       {/* Main Content */}
       <main className="flex-1 p-6">
         <h1 className="text-2xl font-semibold mb-6">User List</h1>
-        
-        {/* Search Form */}
-        <form onSubmit={handleSearchSubmit} className="mb-6">
-          <input
-            type="text"
-            name="name"
-            placeholder="Search by name"
-            value={searchParams.name}
-            onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="text"
-            name="id"
-            placeholder="Search by ID"
-            value={searchParams.id}
-            onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="text"
-            name="gender"
-            placeholder="Search by gender"
-            value={searchParams.gender}
-            onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="date"
-            name="registrationDate"
-            value={searchParams.registrationDate}
-            onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Search
-          </button>
-        </form>
-
-        {/* Displaying Users */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {users.map((user) => (
             <div
