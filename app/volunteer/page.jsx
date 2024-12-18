@@ -49,6 +49,26 @@ export default function Volunteer() {
   };
 
   const formatField = (field) => field ?? "N/A";
+  const toggleTookFood = async (userId, currentStatus) => {
+    try {
+      const response = await fetch(`/api/recipients/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tookFood: !currentStatus }),
+      });
+
+      if (response.ok) {
+        setUsers((prev) =>
+          prev.map((user) =>
+            user._id === userId ? { ...user, tookFood: !currentStatus } : user
+          )
+        );
+      } else console.error("Failed to update tookFood status");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const displayBoolean = (value) => (value ? "Yes" : "No");
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
@@ -89,7 +109,7 @@ export default function Volunteer() {
             Search
           </button>
         </form>
-
+    
         {/* Recipient List */}
         {loading ? (
           <div>Loading...</div>
@@ -102,10 +122,21 @@ export default function Volunteer() {
                 <h2 className="text-lg font-semibold mb-2">{formatField(user.fullName)}</h2>
                 <p>Email: {formatField(user.emailAddress)}</p>
                 <p>Phone: {formatField(user.contactPhone)}</p>
+                <p>Took Food: {displayBoolean(user.tookFood)}</p>
+                <button
+                    onClick={() => toggleTookFood(user._id, user.tookFood)}
+                    className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+                  >
+                    {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
+                  </button>
               </div>
+              
             ))}
+            
           </div>
+
         )}
+        
       </main>
     </div>
   );

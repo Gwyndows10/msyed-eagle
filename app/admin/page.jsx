@@ -68,7 +68,7 @@ export default function Admin() {
   };
 
   const handleUpdateUser = (userId) => {
-    router.push(`/admin/update-recipient/${userId}`); // Redirect to the update page
+    router.push(`/admin/update-recipient/${userId}`);
   };
 
   const handleDeleteUser = async (userId) => {
@@ -97,17 +97,17 @@ export default function Admin() {
     <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
       <main className="flex-1 p-6">
-        <h1 className="text-2xl font-semibold mb-6">Recipient List</h1>
+        <h1 className="text-3xl font-semibold mb-6 text-center">Recipient List</h1>
 
         {/* Search Form */}
-        <form onSubmit={handleSearchSubmit} className="mb-6 flex gap-4">
+        <form onSubmit={handleSearchSubmit} className="mb-6 flex flex-wrap gap-4">
           <input
             type="text"
             name="fullName"
             placeholder="Full Name"
             value={searchParams.fullName}
             onChange={handleSearchChange}
-            className="p-2 bg-gray-800 text-white rounded"
+            className="flex-1 min-w-[200px] p-2 bg-gray-800 text-white rounded"
           />
           <input
             type="email"
@@ -115,7 +115,7 @@ export default function Admin() {
             placeholder="Email"
             value={searchParams.emailAddress}
             onChange={handleSearchChange}
-            className="p-2 bg-gray-800 text-white rounded"
+            className="flex-1 min-w-[200px] p-2 bg-gray-800 text-white rounded"
           />
           <input
             type="text"
@@ -123,7 +123,7 @@ export default function Admin() {
             placeholder="Phone"
             value={searchParams.contactPhone}
             onChange={handleSearchChange}
-            className="p-2 bg-gray-800 text-white rounded"
+            className="flex-1 min-w-[200px] p-2 bg-gray-800 text-white rounded"
           />
           <button
             type="submit"
