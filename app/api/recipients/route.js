@@ -8,7 +8,6 @@ export async function POST(request) {
 
   const {
     fullName,
-    ID,
     dateOfBirth,
     photoIDNumber,
     photoIDType,
@@ -41,7 +40,6 @@ export async function POST(request) {
 
     await Recipient.create({
       fullName,
-      ID,
       dateOfBirth: formattedDateOfBirth,
       photoIDNumber,
       photoIDType,
@@ -82,7 +80,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
   
     const fullName = searchParams.get("fullName");
-    const id = searchParams.get("id");
+    //const id = searchParams.get("id");
     const email = searchParams.get("email");
     const phone = searchParams.get("phone");
     //const registrationDate = searchParams.get("registration_date");
@@ -92,7 +90,7 @@ export async function GET(request) {
     let filter = {};
   
     if (fullName) filter.fullName = { $regex: fullName, $options: "i" };
-    if (id) filter.ID = id;
+    //if (id) filter.ID = id;
     if (email) filter.emailAddress = { $regex: email, $options: "i" };
     if (phone) filter.contactPhone = { $regex: phone, $options: "i" };
     //if (registrationDate) filter.registrationDate = { $gte: new Date(registrationDate) };

@@ -10,7 +10,6 @@ export default function Admin() {
   const [error, setError] = useState(null);
   const [searchParams, setSearchParams] = useState({
     fullName: "",
-    ID: "",
     emailAddress: "",
     contactPhone: "",
   });
@@ -111,14 +110,6 @@ export default function Admin() {
             className="p-2 bg-gray-800 text-white rounded"
           />
           <input
-            type="text"
-            name="ID"
-            placeholder="ID"
-            value={searchParams.ID}
-            onChange={handleSearchChange}
-            className="p-2 bg-gray-800 text-white rounded"
-          />
-          <input
             type="email"
             name="emailAddress"
             placeholder="Email"
@@ -152,7 +143,6 @@ export default function Admin() {
             {users.map((user) => (
               <div key={user._id} className="bg-gray-800 p-4 rounded-lg">
                 <h2 className="text-lg font-semibold mb-2">{formatField(user.fullName)}</h2>
-                <p>ID: {formatField(user.ID)}</p>
                 <p>Email: {formatField(user.emailAddress)}</p>
                 <p>Phone: {formatField(user.contactPhone)}</p>
                 <p>Date of Birth: {formatDate(user.dateOfBirth)}</p>

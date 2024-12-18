@@ -7,7 +7,6 @@ import Sidebar from "@/components/Sidebar";
 export default function CreateRecipient() {
   const [formData, setFormData] = useState({
     fullName: "",
-    ID: "",
     dateOfBirth: "",
     photoIDNumber: "",
     photoIDType: "",
@@ -86,14 +85,6 @@ export default function CreateRecipient() {
             name="fullName"
             placeholder="Full Name"
             value={formData.fullName}
-            onChange={handleChange}
-            className="p-2 bg-gray-800 rounded w-full"
-          />
-          <input
-            type="text"
-            name="ID"
-            placeholder="ID"
-            value={formData.ID}
             onChange={handleChange}
             className="p-2 bg-gray-800 rounded w-full"
           />

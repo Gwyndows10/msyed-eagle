@@ -28,6 +28,12 @@ export default function Sidebar() {
         >
           Create Recipient
         </a>
+        <a
+          href="/volunteer"
+          className="block p-2 text-lg hover:bg-gray-700 rounded-md bg-blue-500 text-white"
+        >
+          Volunteer
+        </a>
       </nav>
     </aside>
   );

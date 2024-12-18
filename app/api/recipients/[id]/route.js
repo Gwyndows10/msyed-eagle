@@ -9,7 +9,6 @@ export async function PUT(request, { params }) {
   console.log("Request body:", request.body);
   const {
     fullName,
-    ID,
     dateOfBirth,
     photoIDNumber,
     photoIDType,
@@ -44,7 +43,6 @@ export async function PUT(request, { params }) {
 
     await Recipient.findByIdAndUpdate(id, {
       fullName,
-      ID,
       dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : recipient.dateOfBirth,
       photoIDNumber,
       photoIDType,

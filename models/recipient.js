@@ -7,11 +7,11 @@ const recipientSchema = new Schema(
       required: true,
       trim: true,
     },
-    ID: {
+    /*ID: {
       type: String,
       required: false,
       unique: true,
-    },
+    }*/
     dateOfBirth: {
       type: Date,
       required: true,
