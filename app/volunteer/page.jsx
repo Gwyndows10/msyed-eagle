@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "../../components/Sidebar";
+import SidebarVolunteer from "../../components/SideBarVolunteer"
 
 export default function Volunteer() {
   const [users, setUsers] = useState([]);
@@ -72,7 +72,7 @@ export default function Volunteer() {
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar />
+      <SidebarVolunteer />
       <main className="flex-1 p-6">
         <h1 className="text-2xl font-semibold mb-6">Recipient List</h1>
 

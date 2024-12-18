@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { supabase } from "@/app/supabaseSetup";
 
-export default function Lock({ showUI }) {
+export default function LockVolunteer({ showUI }) {
   const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -26,16 +26,8 @@ export default function Lock({ showUI }) {
         const user = data?.session?.user; // if no error get the user from the session from the data
 
         if (user) {
-          const metadata = user.user_metadata
-          const role = metadata.role
-          console.log(role)
-          if (role == "admin"){
-              setLoggedIn(true);
-            }
-          else{
-            setLoggedIn(false);
-          }
-          
+          setLoggedIn(true);
+       
         } else {
           setLoggedIn(false);
         }
@@ -48,24 +40,14 @@ export default function Lock({ showUI }) {
     checkSession();
 
     // Optional: Listen for authentication state changes
-    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        // Check for role in user metadata
-        const { user } = session;
-        const role = user?.user_metadata?.role;
-    
-        if (role === 'admin') {
-          setLoggedIn(true);
-        } else {
-          setLoggedIn(false);
-          router.push('/');
-        }
+        setLoggedIn(true);
       } else {
         setLoggedIn(false);
-        router.push('/');
+        router.push("/")
       }
     });
-    
 
     return () => {
       // Cleanup the listener

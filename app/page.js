@@ -9,14 +9,6 @@ import { useRouter } from "next/navigation";
 import { supabase } from "./supabaseSetup";
 
 
-
-// Load custom fonts
-
-
-
-
-
-
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState(""); // State for email
@@ -31,11 +23,28 @@ export default function Login() {
         password,
       });
 
+     
+     
+     
+
       if (error) {
         alert(`Login failed: ${error.message}`);
       } else {
         alert("Login successful!");
-        router.push("/admin"); // Redirect to admin page after successful login
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+        let metadata = user?.user_metadata
+        let role = metadata.role
+
+        console.log(role)
+        if (role == "admin"){
+          router.push("/admin");
+        }
+        else if (role == "volunteer"){
+          router.push("/volunteer")
+        }
+        // Redirect to admin page after successful login
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);
