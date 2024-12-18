@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SidebarVolunteer from "../../components/SideBarVolunteer"
-import LockVolunteer from "@/components/lockVolnteer";
+import LockVolunteer from "@/components/lockVolunteer";
 
 export default function Volunteer() {
   const [users, setUsers] = useState([]);
