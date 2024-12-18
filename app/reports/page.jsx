@@ -5,7 +5,7 @@ import PieChart from "@/components/PieChart";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 // Registering the ArcElement
-//ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Reports() {
   const [reportType, setReportType] = useState("tookFood");

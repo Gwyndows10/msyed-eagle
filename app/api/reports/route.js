@@ -23,7 +23,7 @@ export async function GET(request) {
         ]);
         break;
 
-      case "gender":
+      /*case "gender":
         result = await Recipient.aggregate([
           {
             $group: {
@@ -33,7 +33,9 @@ export async function GET(request) {
           },
         ]);
         break;
-
+*/
+      case "foodPreference":
+        
       default:
         return NextResponse.json(
           { error: "Invalid report type" },

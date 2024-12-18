@@ -152,8 +152,9 @@ export default function CreateRecipient() {
             />
           </div>
           <input
-            type="date"
+            type="text"
             name="dateOfArrivalUSA"
+            placeholder="Date of Arrival USA"
             value={formData.dateOfArrivalUSA}
             onChange={handleChange}
             className="p-2 bg-gray-800 rounded w-full"
