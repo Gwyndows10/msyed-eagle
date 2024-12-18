@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SidebarVolunteer from "../../components/SideBarVolunteer"
+import LockVolunteer from "@/components/lockVolnteer";
 
 export default function Volunteer() {
   const [users, setUsers] = useState([]);
@@ -70,74 +71,78 @@ export default function Volunteer() {
   };
   const displayBoolean = (value) => (value ? "Yes" : "No");
 
-  return (
-    <div className="flex h-screen bg-gray-900 text-white">
-      <SidebarVolunteer />
-      <main className="flex-1 p-6">
-        <h1 className="text-2xl font-semibold mb-6">Recipient List</h1>
+const ui = (
+  <div className="flex h-screen bg-gray-900 text-white">
+    <SidebarVolunteer />
+    <main className="flex-1 p-6">
+      <h1 className="text-2xl font-semibold mb-6">Recipient List</h1>
 
-        {/* Search Form */}
-        <form onSubmit={handleSearchSubmit} className="mb-6 flex gap-4">
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={searchParams.fullName}
-            onChange={handleSearchChange}
-            className="p-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="email"
-            name="emailAddress"
-            placeholder="Email"
-            value={searchParams.emailAddress}
-            onChange={handleSearchChange}
-            className="p-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="text"
-            name="contactPhone"
-            placeholder="Phone"
-            value={searchParams.contactPhone}
-            onChange={handleSearchChange}
-            className="p-2 bg-gray-800 text-white rounded"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Search
-          </button>
-        </form>
-    
-        {/* Recipient List */}
-        {loading ? (
-          <div>Loading...</div>
-        ) : error ? (
-          <div>Error: {error}</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {users.map((user) => (
-              <div key={user._id} className="bg-gray-800 p-4 rounded-lg">
-                <h2 className="text-lg font-semibold mb-2">{formatField(user.fullName)}</h2>
-                <p>Email: {formatField(user.emailAddress)}</p>
-                <p>Phone: {formatField(user.contactPhone)}</p>
-                <p>Took Food: {displayBoolean(user.tookFood)}</p>
-                <button
-                    onClick={() => toggleTookFood(user._id, user.tookFood)}
-                    className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
-                  >
-                    {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
-                  </button>
-              </div>
-              
-            ))}
+      {/* Search Form */}
+      <form onSubmit={handleSearchSubmit} className="mb-6 flex gap-4">
+        <input
+          type="text"
+          name="fullName"
+          placeholder="Full Name"
+          value={searchParams.fullName}
+          onChange={handleSearchChange}
+          className="p-2 bg-gray-800 text-white rounded"
+        />
+        <input
+          type="email"
+          name="emailAddress"
+          placeholder="Email"
+          value={searchParams.emailAddress}
+          onChange={handleSearchChange}
+          className="p-2 bg-gray-800 text-white rounded"
+        />
+        <input
+          type="text"
+          name="contactPhone"
+          placeholder="Phone"
+          value={searchParams.contactPhone}
+          onChange={handleSearchChange}
+          className="p-2 bg-gray-800 text-white rounded"
+        />
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Search
+        </button>
+      </form>
+  
+      {/* Recipient List */}
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div>Error: {error}</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {users.map((user) => (
+            <div key={user._id} className="bg-gray-800 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold mb-2">{formatField(user.fullName)}</h2>
+              <p>Email: {formatField(user.emailAddress)}</p>
+              <p>Phone: {formatField(user.contactPhone)}</p>
+              <p>Took Food: {displayBoolean(user.tookFood)}</p>
+              <button
+                  onClick={() => toggleTookFood(user._id, user.tookFood)}
+                  className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+                >
+                  {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
+                </button>
+            </div>
             
-          </div>
+          ))}
+          
+        </div>
 
-        )}
-        
-      </main>
-    </div>
-  );
+      )}
+      
+    </main>
+  </div>
+);
+
+  return (
+    <LockVolunteer showUI={ui} />
+  )
 }

@@ -30,10 +30,12 @@ export default function LockVolunteer({ showUI }) {
        
         } else {
           setLoggedIn(false);
+          router.push("/")
         }
       } catch (err) {
         console.error("Unexpected error while checking session:", err);
         setLoggedIn(false);
+        router.push("/")
       }
     };
 
