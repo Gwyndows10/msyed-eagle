@@ -13,12 +13,12 @@ export default function Admin() {
     id: "",
     gender: "",
     registrationDate: "",
-  }); // State for search parameters
+  }); 
 
   const [searchQuery, setSearchQuery] = useState(""); // State for the query URL
 
   useEffect(() => {
-    // Fetch users based on the search query
+    
     const fetchUsers = async () => {
       try {
         const response = await fetch(`/api/recipients${searchQuery}`);
@@ -32,7 +32,7 @@ export default function Admin() {
     };
 
     fetchUsers();
-  }, [searchQuery]); // Re-run whenever the search query changes
+  }, [searchQuery]); 
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
