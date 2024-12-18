@@ -1,24 +1,24 @@
 "use client";
 
-import { fetchRecipients } from "@/utils/fetchHelpers";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Sidebar from "../../components/Sidebar";
 
 export default function Admin() {
-  const [users, setUsers] = useState([]); // State to store user data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchParams, setSearchParams] = useState({
-    name: "",
-    id: "",
-    gender: "",
-    registrationDate: "",
-  }); 
+    fullName: "",
+    ID: "",
+    emailAddress: "",
+    contactPhone: "",
+  });
 
-  const [searchQuery, setSearchQuery] = useState(""); // State for the query URL
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    
     const fetchUsers = async () => {
       try {
         const response = await fetch(`/api/recipients${searchQuery}`);
@@ -32,38 +32,21 @@ export default function Admin() {
     };
 
     fetchUsers();
-  }, [searchQuery]); 
+  }, [searchQuery]);
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      [name]: value,
-    }));
+    setSearchParams((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     let query = "?";
-
-    
     Object.keys(searchParams).forEach((key) => {
-      if (searchParams[key]) {
-        query += `${key}=${searchParams[key]}&`;
-      }
+      if (searchParams[key]) query += `${key}=${searchParams[key]}&`;
     });
-
-    
     setSearchQuery(query.slice(0, -1));
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   const toggleTookFood = async (userId, currentStatus) => {
     try {
@@ -74,73 +57,82 @@ export default function Admin() {
       });
 
       if (response.ok) {
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
+        setUsers((prev) =>
+          prev.map((user) =>
             user._id === userId ? { ...user, tookFood: !currentStatus } : user
           )
         );
-      } else {
-        console.error("Failed to update tookFood status");
-      }
+      } else console.error("Failed to update tookFood status");
     } catch (err) {
       console.error(err);
     }
   };
 
-  const returnNotFound = (field) => {
-    return field ?? "N/A";
+  const handleUpdateUser = (userId) => {
+    router.push(`/admin/update-recipient/${userId}`); // Redirect to the update page
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+  const handleDeleteUser = async (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        const response = await fetch(`/api/recipients/${userId}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          setUsers((prev) => prev.filter((user) => user._id !== userId));
+        } else {
+          console.error("Failed to delete user");
+        }
+      } catch (err) {
+        console.error("Error deleting user:", err);
+      }
+    }
   };
 
-  const areufingserious = (tookFood) => {
-    return tookFood ? "Yes" : "No";
-  };
+  const formatField = (field) => field ?? "N/A";
+  const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : "N/A");
+  const displayBoolean = (value) => (value ? "Yes" : "No");
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <main className="flex-1 p-6">
-        <h1 className="text-2xl font-semibold mb-6">User List</h1>
-        
+        <h1 className="text-2xl font-semibold mb-6">Recipient List</h1>
+
         {/* Search Form */}
-        <form onSubmit={handleSearchSubmit} className="mb-6">
+        <form onSubmit={handleSearchSubmit} className="mb-6 flex gap-4">
           <input
             type="text"
-            name="name"
-            placeholder="Search by name"
-            value={searchParams.name}
+            name="fullName"
+            placeholder="Full Name"
+            value={searchParams.fullName}
             onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
+            className="p-2 bg-gray-800 text-white rounded"
           />
           <input
             type="text"
-            name="id"
-            placeholder="Search by ID"
-            value={searchParams.id}
+            name="ID"
+            placeholder="ID"
+            value={searchParams.ID}
             onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
+            className="p-2 bg-gray-800 text-white rounded"
+          />
+          <input
+            type="email"
+            name="emailAddress"
+            placeholder="Email"
+            value={searchParams.emailAddress}
+            onChange={handleSearchChange}
+            className="p-2 bg-gray-800 text-white rounded"
           />
           <input
             type="text"
-            name="gender"
-            placeholder="Search by gender"
-            value={searchParams.gender}
+            name="contactPhone"
+            placeholder="Phone"
+            value={searchParams.contactPhone}
             onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="date"
-            name="registrationDate"
-            value={searchParams.registrationDate}
-            onChange={handleSearchChange}
-            className="p-2 mr-2 bg-gray-800 text-white rounded"
+            className="p-2 bg-gray-800 text-white rounded"
           />
           <button
             type="submit"
@@ -150,39 +142,69 @@ export default function Admin() {
           </button>
         </form>
 
-        {/* Displaying Users */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {users.map((user) => (
-            <div
-              key={user._id}
-              className="bg-gray-800 p-4 rounded-lg flex flex-col justify-between"
-            >
-              <div>
-                <h2 className="text-lg font-medium">{returnNotFound(user.fullName)}</h2>
-                <p className="text-gray-400">ID: {returnNotFound(user.ID)}</p>
-                <p className="text-gray-400">Gender: {returnNotFound(user.gender)}</p>
-                <p className="text-gray-400">Email Address: {returnNotFound(user.emailAddress)}</p>
-                <p className="text-gray-400">Date of Birth: {formatDate(user.dateOfBirth)}</p>
-                <p className="text-gray-400">Registration Date: {formatDate(user.registrationDate)}</p>
-                <p className="text-gray-400">Did the recipient take the food? {areufingserious(user.tookFood)}</p>
+        {/* Recipient List */}
+        {loading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          <div>Error: {error}</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {users.map((user) => (
+              <div key={user._id} className="bg-gray-800 p-4 rounded-lg">
+                <h2 className="text-lg font-semibold mb-2">{formatField(user.fullName)}</h2>
+                <p>ID: {formatField(user.ID)}</p>
+                <p>Email: {formatField(user.emailAddress)}</p>
+                <p>Phone: {formatField(user.contactPhone)}</p>
+                <p>Date of Birth: {formatDate(user.dateOfBirth)}</p>
+                <p>Photo ID Number: {formatField(user.photoIDNumber)}</p>
+                <p>Photo ID Type: {formatField(user.photoIDType)}</p>
+                <p>Address: {formatField(user.address)}</p>
+                <p>City: {formatField(user.city)}</p>
+                <p>State: {formatField(user.state)}</p>
+                <p>Zip Code: {formatField(user.zipCode)}</p>
+                <p>Date of Arrival in USA: {formatDate(user.dateOfArrivalUSA)}</p>
+                <p>Monthly Income: {formatField(user.monthlyIncome)}</p>
+                <p>Food Stamp: {displayBoolean(user.foodStamp)}</p>
+                <p>Cash Aid Amount: {formatField(user.cashAidAmount)}</p>
+                <p>Children (Age 0-5): {user.childrenCount?.age0to5 ?? 0}</p>
+                <p>Children (Age 6-18): {user.childrenCount?.age6to18 ?? 0}</p>
+                <p>Adults (Age 18-64): {user.adultsCount?.age18to64 ?? 0}</p>
+                <p>Ethnicity: {formatField(user.ethnicity)}</p>
+                <p>Food Preference: {formatField(user.foodPreference)}</p>
+                <p>Services Required:</p>
+                <ul>
+                  <li>Food Package: {formatField(user.servicesRequired?.foodPackage ?? "N/A")}</li>
+                  <li>Backpacks: {formatField(user.servicesRequired?.backpacks ?? "N/A")}</li>
+                  <li>Diapers: {formatField(user.servicesRequired?.diapers ?? "N/A")}</li>
+                  <li>Counseling: {formatField(user.servicesRequired?.counseling ?? "N/A")}</li>
+                  <li>Other: {formatField(user.servicesRequired?.anyOther ?? "N/A")}</li>
+                </ul>
+                <p>Took Food: {displayBoolean(user.tookFood)}</p>
+
+                <div className="mt-4 flex space-x-2">
+                  <button
+                    onClick={() => toggleTookFood(user._id, user.tookFood)}
+                    className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+                  >
+                    {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
+                  </button>
+                  <button
+                    onClick={() => handleUpdateUser(user._id)}
+                    className="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={() => handleDeleteUser(user._id)}
+                    className="px-4 py-2 rounded bg-red-500 hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-              <div className="mt-4 flex justify-around">
-                <button
-                  onClick={() => toggleTookFood(user._id, false)}
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                  ✔ Took Food
-                </button>
-                <button
-                  onClick={() => toggleTookFood(user._id, true)}
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                >
-                  ✖ Did Not Take Food
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );

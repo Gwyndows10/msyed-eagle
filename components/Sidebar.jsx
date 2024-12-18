@@ -13,14 +13,20 @@ export default function Sidebar() {
         </div>
       </div>
       <nav className="space-y-4">
-        <a href="/admin" className="block p-2 text-lg hover:bg-gray-700 rounded-md">
+        <a href="/admin" className="block p-2 text-lg hover:bg-gray-700 rounded-md bg-blue-500 text-white">
           Dashboard
         </a>
-        <a href="/users" className="block p-2 text-lg hover:bg-gray-700 rounded-md">
+        <a href="/users" className="block p-2 text-lg hover:bg-gray-700 rounded-md bg-blue-500 text-white">
           Users
         </a>
-        <a href="/reports" className="block p-2 text-lg hover:bg-gray-700 rounded-md">
+        <a href="/reports" className="block p-2 text-lg hover:bg-gray-700 rounded-md bg-blue-500 text-white">
           Generate Reports
+        </a>
+        <a
+          href="/create-recipient"
+          className="block p-2 text-lg hover:bg-gray-700 rounded-md bg-blue-500 text-white"
+        >
+          Create Recipient
         </a>
       </nav>
     </aside>

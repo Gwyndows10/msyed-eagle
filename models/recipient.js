@@ -12,34 +12,88 @@ const recipientSchema = new Schema(
       required: true,
       unique: true,
     },
+    dateOfBirth: {
+      type: Date,
+      required: true,
+    },
+    photoIDNumber: {
+      type: String,
+      required: true,
+    },
+    photoIDType: {
+      type: String,
+      enum: ["DL", "Passport", "I-94", "EAD", "Other"],
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    zipCode: {
+      type: String,
+      required: true,
+    },
+    dateOfArrivalUSA: {
+      type: Date,
+    },
+    contactPhone: {
+      type: String,
+      required: true,
+    },
     emailAddress: {
       type: String,
       required: true,
       unique: true,
     },
-    gender: {
+    monthlyIncome: {
+      type: Number,
+    },
+    foodStamp: {
+      type: Boolean,
+    },
+    cashAidAmount: {
+      type: Number,
+    },
+    childrenCount: {
+      age0to5: { type: Number, default: 0 },
+      age6to18: { type: Number, default: 0 },
+    },
+    adultsCount: {
+      age18to64: { type: Number, default: 0 },
+    },
+    ethnicity: {
       type: String,
-      enum: ["Male", "Female"],
-      required: true,
     },
-    dateOfBirth: {
-      type: Date,
-      required: true,
+    foodPreference: {
+      type: String,
+      enum: ["Halal", "Vegetarian", "Other"]
     },
-    registrationDate: {
-      type: Date,
-      required: true,
+    servicesRequired: {
+      foodPackage: { type: String },
+      backpacks: { type: String },
+      diapers: { type: String },
+      counseling: { type: String },
+      anyOther: { type: String },
     },
     tookFood: {
       type: Boolean,
-      required: true,
-    },
+      default: false,
+    }
   },
   {
     timestamps: true,
   }
 );
 
-const Recipient = mongoose.models.Recipient || mongoose.model("Recipient", recipientSchema);
+const Recipient =
+  mongoose.models.Recipient || mongoose.model("Recipient", recipientSchema);
 
 export default Recipient;
