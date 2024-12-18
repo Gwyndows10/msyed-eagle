@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "../../components/Sidebar";
+import Lock from "@/components/lock";
 
 export default function Admin() {
   const [users, setUsers] = useState([]);
@@ -93,7 +94,7 @@ export default function Admin() {
   const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : "N/A");
   const displayBoolean = (value) => (value ? "Yes" : "No");
 
-  return (
+  const ui = (
     <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
       <main className="flex-1 p-6">
@@ -197,5 +198,9 @@ export default function Admin() {
         )}
       </main>
     </div>
+  );
+
+  return (
+    <Lock showUI={ui}/>
   );
 }

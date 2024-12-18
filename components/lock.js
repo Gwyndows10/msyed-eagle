@@ -13,15 +13,17 @@ export default function Lock({ showUI }) {
       try {
         // Check for an active session
         const { data, error } = await supabase.auth.getSession();
+          
+        
 
         if (error) {
           console.error("Error checking session:", error);
           setLoggedIn(false);
-          router.push("login")
+          router.push("/") //send user to login page
           return;
         }
 
-        const user = data?.session?.user;
+        const user = data?.session?.user; // if no error get the user from the session from the data
 
         if (user) {
           setLoggedIn(true);
@@ -42,7 +44,7 @@ export default function Lock({ showUI }) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
-        router.push("login")
+        router.push("/")
       }
     });
 

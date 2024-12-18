@@ -2,31 +2,49 @@
 
 import Image from "next/image";
 import localFont from "next/font/local";
+//import dotenv from '../../dotenv';
+//dotenv.config();
+import { useState } from "react"; // For managing email and password state
 import { useRouter } from "next/navigation";
+import { supabase } from "./supabaseSetup";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
-export default function Page() {
-  const router = useRouter(); // Move useRouter here
 
-  const login = (event) => {
-    event.preventDefault(); // Prevent form submission
-    router.push("admin");
-    console.log(process.env); // Navigate to /admin
+// Load custom fonts
+
+
+
+
+
+
+export default function Login() {
+  const router = useRouter();
+  const [email, setEmail] = useState(""); // State for email
+  const [password, setPassword] = useState(""); // State for password
+
+  const login = async (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        alert(`Login failed: ${error.message}`);
+      } else {
+        alert("Login successful!");
+        router.push("/admin"); // Redirect to admin page after successful login
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred:", err);
+    }
   };
 
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} flex items-center justify-center min-h-screen bg-gray-100 p-6`}
+      className={` flex items-center justify-center min-h-screen bg-gray-100 p-6`}
     >
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
         <div className="text-center mb-6">
@@ -37,21 +55,26 @@ export default function Page() {
             Please log in to continue.
           </p>
         </div>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={login}>
           <input
             type="email"
             placeholder="Email"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} // Update email state
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300 text-black"
+            required
           />
           <input
             type="password"
             placeholder="Password"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} // Update password state
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300 text-black"
+            required
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-            onClick={(event) => login(event)}
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition "
           >
             Log In
           </button>
