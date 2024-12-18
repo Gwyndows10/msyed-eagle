@@ -9,7 +9,7 @@ const recipientSchema = new Schema(
     },
     ID: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
     },
     dateOfBirth: {
