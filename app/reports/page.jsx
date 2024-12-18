@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import { useState, useEffect } from "react";
 import PieChart from "@/components/PieChart";
@@ -82,3 +82,4 @@ export default function Reports() {
     </div>
   );
 }
+*/

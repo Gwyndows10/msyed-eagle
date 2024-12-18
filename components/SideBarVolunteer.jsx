@@ -71,7 +71,7 @@ export default function SidebarVolunteer() {
           href="/volunteer"
           className="block p-3 text-base font-medium rounded-lg bg-gray-800 hover:bg-blue-500 transition duration-200 ease-in-out"
         >
-          Volunteer
+          Dashboard
         </a>
       
       </nav>
