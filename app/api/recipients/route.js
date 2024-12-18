@@ -81,7 +81,7 @@ export async function POST(request) {
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
   
-    const name = searchParams.get("name");
+    const fullName = searchParams.get("fullName");
     const id = searchParams.get("id");
     const email = searchParams.get("email");
     const phone = searchParams.get("phone");
@@ -91,7 +91,7 @@ export async function GET(request) {
   
     let filter = {};
   
-    if (name) filter.fullName = { $regex: name, $options: "i" };
+    if (fullName) filter.fullName = { $regex: fullName, $options: "i" };
     if (id) filter.ID = id;
     if (email) filter.emailAddress = { $regex: email, $options: "i" };
     if (phone) filter.contactPhone = { $regex: phone, $options: "i" };

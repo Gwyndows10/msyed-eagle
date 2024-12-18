@@ -76,9 +76,6 @@ export default function CreateRecipient() {
       alert("An error occurred while creating the recipient.");
     }
   };
-  const handleCreateRecipient = () => {
-    router.push("/create-recipient"); // Redirect to create-recipient page
-  };
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
@@ -101,8 +98,9 @@ export default function CreateRecipient() {
             className="p-2 bg-gray-800 rounded w-full"
           />
           <input
-            type="date"
+            type="text"
             name="dateOfBirth"
+            placeholder="Date of Birth"
             value={formData.dateOfBirth}
             onChange={handleChange}
             className="p-2 bg-gray-800 rounded w-full"
