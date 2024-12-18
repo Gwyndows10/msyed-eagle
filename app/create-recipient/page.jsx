@@ -152,8 +152,9 @@ export default function CreateRecipient() {
             />
           </div>
           <input
-            type="date"
+            type="text"
             name="dateOfArrivalUSA"
+            placeholder="Date of arrival in USA"
             value={formData.dateOfArrivalUSA}
             onChange={handleChange}
             className="p-2 bg-gray-800 rounded w-full"
@@ -175,33 +176,49 @@ export default function CreateRecipient() {
             className="p-2 bg-gray-800 rounded w-full"
           />
           <input
-            type="number"
+            type="text"
             name="monthlyIncome"
             placeholder="Monthly Income"
             value={formData.monthlyIncome}
             onChange={handleChange}
             className="p-2 bg-gray-800 rounded w-full"
           />
-          <div className="flex space-x-2">
-            <input
-              type="number"
+          <input
+            type="Text"
+            name="foodStamp"
+            placeholder="Food stamp"
+            value={formData.foodStamp}
+            onChange={handleChange}
+            className="p-2 bg-gray-800 rounded w-full"
+          />
+          <input
+            type="Number"
+            name="cashAidAmount"
+            placeholder="Cash aid amount"
+            value={formData.cashAidAmount}
+            onChange={handleChange}
+            className="p-2 bg-gray-800 rounded w-full"
+          />
+          
+          <input
+              type="text"
               name="childrenCount.age0to5"
               placeholder="Children 0-5"
               value={formData.childrenCount.age0to5}
               onChange={handleChange}
-              className="p-2 bg-gray-800 rounded w-1/2"
-            />
+              className="p-2 bg-gray-800 rounded w-full"
+          />
             <input
-              type="number"
+              type="text"
               name="childrenCount.age6to18"
               placeholder="Children 6-18"
               value={formData.childrenCount.age6to18}
               onChange={handleChange}
               className="p-2 bg-gray-800 rounded w-1/2"
             />
-          </div>
+          
           <input
-            type="number"
+            type="text"
             name="adultsCount.age18to64"
             placeholder="Adults 18-64"
             value={formData.adultsCount.age18to64}

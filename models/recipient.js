@@ -63,11 +63,11 @@ const recipientSchema = new Schema(
       type: Number,
     },
     childrenCount: {
-      age0to5: { type: Number, default: 0 },
-      age6to18: { type: Number, default: 0 },
+      age0to5: { type: Number, },
+      age6to18: { type: Number, },
     },
     adultsCount: {
-      age18to64: { type: Number, default: 0 },
+      age18to64: { type: Number, },
     },
     ethnicity: {
       type: String,
