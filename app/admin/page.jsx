@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "../../components/Sidebar";
 import Lock from "@/components/lock";
+import SearchForm from "@/components/SearchForm";
 
 export default function Admin() {
   const [users, setUsers] = useState([]);
@@ -48,44 +49,6 @@ export default function Admin() {
     setSearchQuery(query.slice(0, -1));
   };
 
-  const toggleTookFood = async (userId, currentStatus) => {
-    try {
-      const response = await fetch(`/api/recipients/${userId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tookFood: !currentStatus }),
-      });
-
-      if (response.ok) {
-        setUsers((prev) =>
-          prev.map((user) =>
-            user._id === userId ? { ...user, tookFood: !currentStatus } : user
-          )
-        );
-      } else console.error("Failed to update tookFood status in toggle took food");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const handleResetTookFood = async (userId) => {
-    try {
-      const response = await fetch(`/api/recipients/reset-took-food`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      });
-  
-      if (response.ok) {
-        setUsers((prev) =>
-          prev.map((user) => ({ ...user, tookFood: false })) 
-        );
-      } else {
-        console.error("Failed to reset tookFood status for all users");
-      }
-    } catch (err) {
-      console.error("Error resetting tookFood:", err);
-    }
-  };
-  
   const handleUpdateUser = (userId) => {
     router.push(`/update-recipient/${userId}`);
   };
@@ -107,119 +70,141 @@ export default function Admin() {
       }
     }
   };
+  
+  const toggleTookFood = async (userId, currentStatus) => {
+    try {
+      const response = await fetch(`/api/recipients/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tookFood: !currentStatus }), // Toggle tookFood status
+      });
+  
+      if (response.ok) {
+        // Update the user list with the new tookFood status
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user._id === userId ? { ...user, tookFood: !currentStatus } : user
+          )
+        );
+      } else {
+        console.error("Failed to update tookFood status in toggle took food");
+      }
+    } catch (err) {
+      console.error("Error in toggleTookFood:", err);
+    }
+  };
+  
+  const [selectedUser, setSelectedUser] = useState(null); // Track selected user
 
-  const formatField = (field) => field ?? "N/A";
-  const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : "N/A");
-  const displayBoolean = (value) => (value ? "Yes" : "No");
-
+  const handleRowClick = (user) => {
+    setSelectedUser(user); // Set the clicked user
+  };
+  
+  const handleCloseDetails = () => {
+    setSelectedUser(null); // Close user details
+  };
+  
   const ui = (
     <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar handleResetTookFood={handleResetTookFood}/>
-      
+      <Sidebar />
+
       <main className="flex-1 p-6">
         <h1 className="text-3xl font-semibold mb-6 text-center">Recipient List</h1>
 
-        {/* Search Form */}
-        <form onSubmit={handleSearchSubmit} className="mb-6 flex flex-wrap gap-4">
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={searchParams.fullName}
-            onChange={handleSearchChange}
-            className="flex-1 min-w-[200px] p-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="email"
-            name="emailAddress"
-            placeholder="Email"
-            value={searchParams.emailAddress}
-            onChange={handleSearchChange}
-            className="flex-1 min-w-[200px] p-2 bg-gray-800 text-white rounded"
-          />
-          <input
-            type="text"
-            name="contactPhone"
-            placeholder="Phone"
-            value={searchParams.contactPhone}
-            onChange={handleSearchChange}
-            className="flex-1 min-w-[200px] p-2 bg-gray-800 text-white rounded"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Search
-          </button>
-        </form>
+        <SearchForm
+          searchParams={searchParams}
+          handleSearchChange={handleSearchChange}
+          handleSearchSubmit={handleSearchSubmit}
+        />
 
-        {/* Recipient List */}
+        {/* User Table */}
         {loading ? (
-          <div>Loading...</div>
-        ) : error ? (
-          <div>Error: {error}</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {users.map((user) => (
-              <div key={user._id} className="bg-gray-800 p-4 rounded-lg">
-                <h2 className="text-lg font-semibold mb-2">{formatField(user.fullName)}</h2>
-                <p>Email: {formatField(user.emailAddress)}</p>
-                <p>Phone: {formatField(user.contactPhone)}</p>
-                <p>Date of Birth: {formatDate(user.dateOfBirth)}</p>
-                <p>Photo ID Number: {formatField(user.photoIDNumber)}</p>
-                <p>Photo ID Type: {formatField(user.photoIDType)}</p>
-                <p>Address: {formatField(user.address)}</p>
-                <p>City: {formatField(user.city)}</p>
-                <p>State: {formatField(user.state)}</p>
-                <p>Zip Code: {formatField(user.zipCode)}</p>
-                <p>Date of Arrival in USA: {formatDate(user.dateOfArrivalUSA)}</p>
-                <p>Monthly Income: {formatField(user.monthlyIncome)}</p>
-                <p>Food Stamp: {displayBoolean(user.foodStamp)}</p>
-                <p>Cash Aid Amount: {formatField(user.cashAidAmount)}</p>
-                <p>Children (Age 0-5): {user.childrenCount?.age0to5 ?? 0}</p>
-                <p>Children (Age 6-18): {user.childrenCount?.age6to18 ?? 0}</p>
-                <p>Adults (Age 18-64): {user.adultsCount?.age18to64 ?? 0}</p>
-                <p>Ethnicity: {formatField(user.ethnicity)}</p>
-                <p>Food Preference: {formatField(user.foodPreference)}</p>
-                <p>Services Required:</p>
-                <ul>
-                  <li>Food Package: {formatField(user.servicesRequired?.foodPackage ?? "N/A")}</li>
-                  <li>Backpacks: {formatField(user.servicesRequired?.backpacks ?? "N/A")}</li>
-                  <li>Diapers: {formatField(user.servicesRequired?.diapers ?? "N/A")}</li>
-                  <li>Counseling: {formatField(user.servicesRequired?.counseling ?? "N/A")}</li>
-                  <li>Other: {formatField(user.servicesRequired?.anyOther ?? "N/A")}</li>
-                </ul>
-                <p>Took Food: {displayBoolean(user.tookFood)}</p>
+  <div>Loading...</div>
+) : error ? (
+  <div>Error: {error}</div>
+) : (
+  <table className="min-w-full bg-gray-800 rounded-lg">
+    <thead>
+      <tr>
+        <th className="px-4 py-2 text-left">Full Name</th>
+        <th className="px-4 py-2 text-left">Email</th>
+        <th className="px-4 py-2 text-left">Phone</th>
+        <th className="px-4 py-2 text-left">Took Food</th>
+        <th className="px-4 py-2 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {users.map((user) => (
+        <tr
+          key={user._id}
+          className="hover:bg-gray-700 cursor-pointer"
+          onClick={() => handleRowClick(user)}  // Add row click functionality
+        >
+          <td className="px-4 py-2">{user.fullName ?? "N/A"}</td>
+          <td className="px-4 py-2">{user.emailAddress ?? "N/A"}</td>
+          <td className="px-4 py-2">{user.contactPhone ?? "N/A"}</td>
+          <td className="px-4 py-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent row click from triggering
+                toggleTookFood(user._id, user.tookFood);
+              }}
+              className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+            >
+              {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
+            </button>
+          </td>
+          <td className="px-4 py-2">
+            <button
+              onClick={() => handleUpdateUser(user._id)}
+              className="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600"
+            >
+              Update
+            </button>
+            <button
+              onClick={() => handleDeleteUser(user._id)}
+              className="px-4 py-2 rounded bg-red-500 hover:bg-red-600 ml-2"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
 
-                <div className="mt-4 flex space-x-2">
-                  <button
-                    onClick={() => toggleTookFood(user._id, user.tookFood)}
-                    className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
-                  >
-                    {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
-                  </button>
-                  <button
-                    onClick={() => handleUpdateUser(user._id)}
-                    className="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDeleteUser(user._id)}
-                    className="px-4 py-2 rounded bg-red-500 hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+{/* User Details Modal or Section */}
+{selectedUser && (
+  <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
+  <div className="bg-gray-800 p-6 rounded-lg w-2/3 max-w-lg relative flex flex-col items-center"> {/* Added flex and items-center */}
+    <h2 className="text-2xl font-semibold mb-4 text-center">{selectedUser.fullName}</h2> {/* Added text-center for title */}
+      <button
+        onClick={handleCloseDetails}
+        className="absolute top-2 right-2 text-white text-xl p-1 rounded-full hover:bg-gray-700"
+      >
+        &times;
+      </button>
+
+      <p><strong>Email:</strong> {selectedUser.emailAddress ?? "N/A"}</p>
+      <p><strong>Phone:</strong> {selectedUser.contactPhone ?? "N/A"}</p>
+      <p><strong>Address:</strong> {selectedUser.address ?? "N/A"}</p>
+      <p><strong>City:</strong> {selectedUser.city ?? "N/A"}</p>
+      <p><strong>State:</strong> {selectedUser.state ?? "N/A"}</p>
+      <p><strong>Zip Code:</strong> {selectedUser.zipCode ?? "N/A"}</p>
+      <p><strong>Food Preference:</strong> {selectedUser.foodPreference ?? "N/A"}</p>
+      <p><strong>Food Stamp:</strong> {selectedUser.foodStamp ? "Yes" : "No"}</p>
+
+      {/* Add more details as necessary */}
+    </div>
+  </div>
+)}
+
       </main>
     </div>
   );
 
   return (
-    <Lock showUI={ui}/>
+    <Lock showUI={ui} />
   );
 }
