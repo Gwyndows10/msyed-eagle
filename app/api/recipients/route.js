@@ -70,6 +70,7 @@ export async function POST(request) {
         anyOther: servicesRequired?.anyOther || "",
       },
       tookFood,
+      tookFoodHistory: []
     });
 
     return NextResponse.json({ message: "Recipient Added" }, { status: 201 });
@@ -99,7 +100,12 @@ export async function GET(request) {
       const recipients = await Recipient.find(filter);
       console.log("Filtered Recipients:", recipients);
   
-      return NextResponse.json({ recipients }, { status: 200 });
+      return NextResponse.json({
+        recipients: recipients.map((recipient) => ({
+          ...recipient.toObject(),
+          tookFoodHistory: recipient.tookFoodHistory || [],  
+        })),
+      }, { status: 200 });
     } catch (error) {
       console.error("Error fetching recipients:", error);
       return NextResponse.json({ error: "Failed to fetch recipients" }, { status: 500 });

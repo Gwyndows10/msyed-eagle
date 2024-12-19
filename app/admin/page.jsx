@@ -62,14 +62,32 @@ export default function Admin() {
             user._id === userId ? { ...user, tookFood: !currentStatus } : user
           )
         );
-      } else console.error("Failed to update tookFood status");
+      } else console.error("Failed to update tookFood status in toggle took food");
     } catch (err) {
       console.error(err);
     }
   };
-
+  const handleResetTookFood = async (userId) => {
+    try {
+      const response = await fetch(`/api/recipients/reset-took-food`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      if (response.ok) {
+        setUsers((prev) =>
+          prev.map((user) => ({ ...user, tookFood: false })) 
+        );
+      } else {
+        console.error("Failed to reset tookFood status for all users");
+      }
+    } catch (err) {
+      console.error("Error resetting tookFood:", err);
+    }
+  };
+  
   const handleUpdateUser = (userId) => {
-    router.push(`/admin/update-recipient/${userId}`);
+    router.push(`/update-recipient/${userId}`);
   };
 
   const handleDeleteUser = async (userId) => {
@@ -96,7 +114,8 @@ export default function Admin() {
 
   const ui = (
     <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar />
+      <Sidebar handleResetTookFood={handleResetTookFood}/>
+      
       <main className="flex-1 p-6">
         <h1 className="text-3xl font-semibold mb-6 text-center">Recipient List</h1>
 

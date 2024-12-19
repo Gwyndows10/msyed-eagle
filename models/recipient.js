@@ -7,11 +7,6 @@ const recipientSchema = new Schema(
       required: true,
       trim: true,
     },
-    /*ID: {
-      type: String,
-      required: false,
-      unique: true,
-    }*/
     dateOfBirth: {
       type: Date,
       required: true,
@@ -63,18 +58,18 @@ const recipientSchema = new Schema(
       type: Number,
     },
     childrenCount: {
-      age0to5: { type: Number, },
-      age6to18: { type: Number, },
+      age0to5: { type: Number },
+      age6to18: { type: Number },
     },
     adultsCount: {
-      age18to64: { type: Number, },
+      age18to64: { type: Number },
     },
     ethnicity: {
       type: String,
     },
     foodPreference: {
       type: String,
-      enum: ["Halal", "Vegetarian", "Other"]
+      enum: ["Halal", "Vegetarian", "Other"],
     },
     servicesRequired: {
       foodPackage: { type: String },
@@ -86,7 +81,19 @@ const recipientSchema = new Schema(
     tookFood: {
       type: Boolean,
       default: false,
-    }
+    },
+    tookFoodHistory: [
+      {
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        status: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

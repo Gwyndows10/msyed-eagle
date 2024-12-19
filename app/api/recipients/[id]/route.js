@@ -4,9 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
   const { id } = await params;
-  //const data = await request.json();
-  //console.log(data);
-  console.log("Request body:", request.body);
+
   const {
     fullName,
     dateOfBirth,
@@ -41,7 +39,11 @@ export async function PUT(request, { params }) {
       );
     }
 
-    await Recipient.findByIdAndUpdate(id, {
+    const tookFoodChanged = recipient.tookFood !== tookFood;
+    const isFoodTakenNow = tookFood === true;
+    const wasFoodNotTakenPreviously = recipient.tookFood === false;
+
+    const updateData = {
       fullName,
       dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : recipient.dateOfBirth,
       photoIDNumber,
@@ -50,9 +52,7 @@ export async function PUT(request, { params }) {
       city,
       state,
       zipCode,
-      dateOfArrivalUSA: dateOfArrivalUSA
-        ? new Date(dateOfArrivalUSA)
-        : recipient.dateOfArrivalUSA,
+      dateOfArrivalUSA: dateOfArrivalUSA ? new Date(dateOfArrivalUSA) : recipient.dateOfArrivalUSA,
       contactPhone,
       emailAddress,
       monthlyIncome,
@@ -63,8 +63,30 @@ export async function PUT(request, { params }) {
       ethnicity,
       foodPreference,
       servicesRequired,
-      tookFood,
-    });
+      tookFood,  // Include the updated tookFood status here
+    };
+
+    await Recipient.findByIdAndUpdate(id, updateData);
+
+    // Log food history only when tookFood goes from 'false' to 'true'
+    if (tookFoodChanged && isFoodTakenNow && wasFoodNotTakenPreviously) {
+      await Recipient.findByIdAndUpdate(id, {
+        $push: {
+          tookFoodHistory: {
+            date: new Date(),
+            status: tookFood,  // Add new tookFood status to the history
+          },
+        },
+      });
+    }
+    if (tookFoodChanged && !isFoodTakenNow && !wasFoodNotTakenPreviously) {
+      await Recipient.findByIdAndUpdate(id, {
+        $pop: {
+          tookFoodHistory: -1  
+        },
+      });
+    }
+    
 
     return NextResponse.json(
       { message: "Recipient updated successfully" },
@@ -80,7 +102,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-  const { id } = await params;
+  const { id } = params;
 
   await connectMongoDB();
 
@@ -105,31 +127,31 @@ export async function GET(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-    const { id } = await params;
-  
-    await connectMongoDB();
-  
-    try {
-      const recipient = await Recipient.findById(id);
-  
-      if (!recipient) {
-        return NextResponse.json(
-          { message: "Recipient not found" },
-          { status: 404 }
-        );
-      }
-  
-      await Recipient.findByIdAndDelete(id);
-  
+  const { id } = params;
+
+  await connectMongoDB();
+
+  try {
+    const recipient = await Recipient.findById(id);
+
+    if (!recipient) {
       return NextResponse.json(
-        { message: "Recipient deleted successfully" },
-        { status: 200 }
-      );
-    } catch (error) {
-      console.error("Error deleting recipient:", error);
-      return NextResponse.json(
-        { error: "Failed to delete recipient" },
-        { status: 500 }
+        { message: "Recipient not found" },
+        { status: 404 }
       );
     }
+
+    await Recipient.findByIdAndDelete(id);
+
+    return NextResponse.json(
+      { message: "Recipient deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting recipient:", error);
+    return NextResponse.json(
+      { error: "Failed to delete recipient" },
+      { status: 500 }
+    );
   }
+}

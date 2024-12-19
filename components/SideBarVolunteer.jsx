@@ -11,7 +11,7 @@ export default function SidebarVolunteer() {
       const { data, error } = await supabase.auth.getUser();
       if (data?.user) {
         setUser(data.user);
-        setRole(data.user.role || "volunteer"); 
+        setRole(data.user.user_metadata?.role); 
       } else {
         console.error(error);
       }
@@ -72,6 +72,12 @@ export default function SidebarVolunteer() {
           className="block p-3 text-base font-medium rounded-lg bg-gray-800 hover:bg-blue-500 transition duration-200 ease-in-out"
         >
           Dashboard
+        </a>
+        <a
+          href="/create-recipient"
+          className="block p-3 text-base font-medium rounded-lg bg-gray-800 hover:bg-blue-500 transition duration-200 ease-in-out"
+        >
+          Create Recipient
         </a>
       
       </nav>

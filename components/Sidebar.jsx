@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/libs/supabaseClient";// Adjust path accordingly
 
-export default function Sidebar() {
+export default function Sidebar({handleResetTookFood}) {
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Track menu open/close state
   const [role, setRole] = useState(""); // Track user role (admin/volunteer)
@@ -11,7 +11,7 @@ export default function Sidebar() {
       const { data, error } = await supabase.auth.getUser();
       if (data?.user) {
         setUser(data.user);
-        setRole(data.user.role || "volunteer"); 
+        setRole(data.user.user_metadata?.role ); 
       } else {
         console.error(error);
       }
@@ -73,12 +73,7 @@ export default function Sidebar() {
         >
           Dashboard
         </a>
-        <a
-          href="/users"
-          className="block p-3 text-base font-medium rounded-lg bg-gray-800 hover:bg-blue-500 transition duration-200 ease-in-out"
-        >
-          Users
-        </a>
+        
         <a
           href="/reports"
           className="block p-3 text-base font-medium rounded-lg bg-gray-800 hover:bg-blue-500 transition duration-200 ease-in-out"
@@ -97,6 +92,12 @@ export default function Sidebar() {
         >
           Volunteer
         </a>
+        <button
+            onClick={handleResetTookFood}
+            className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded"
+          >
+            Reset Took Food
+          </button>
       </nav>
     </aside>
   );
