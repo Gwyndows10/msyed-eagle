@@ -81,33 +81,60 @@ export default function CreateRecipient() {
       <Sidebar />
       <main className="flex-1 p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { name: "fullName", placeholder: "Full Name" },
-            { name: "dateOfBirth", placeholder: "Date of Birth" },
-            { name: "photoIDNumber", placeholder: "Photo ID Number" },
-            { name: "address", placeholder: "Address" },
-            { name: "city", placeholder: "City" },
-            { name: "state", placeholder: "State" },
-            { name: "zipCode", placeholder: "Zip Code" },
-            { name: "dateOfArrivalUSA", placeholder: "Date of Arrival (USA)" },
-            { name: "contactPhone", placeholder: "Contact Phone" },
-            { name: "emailAddress", placeholder: "Email Address" },
-            { name: "monthlyIncome", placeholder: "Monthly Income" },
-            { name: "ethnicity", placeholder: "Ethnicity" },
-            { name: "foodPreference", placeholder: "Food Preference" },
-          ].map(({ name, placeholder }) => (
-            <div key={name} className="flex items-center space-x-4">
-              <label className="w-1/4 text-right">{placeholder}:</label>
-              <input
-                type="text"
-                name={name}
-                //placeholder={placeholder}
-                value={formData[name]}
-                onChange={handleChange}
-                className="p-2 bg-gray-800 rounded w-full"
-              />
-            </div>
-          ))}
+        {[
+  { name: "fullName", placeholder: "Full Name" },
+  { name: "dateOfBirth", placeholder: "Date of Birth", type: "date" },
+  { name: "photoIDNumber", placeholder: "Photo ID Number" },
+  { name: "photoIDType", placeholder: "Photo ID Type", type: "select", options: ["DL", "Passport", "I-94", "EAD", "Other"] },
+  { name: "address", placeholder: "Address" },
+  { name: "city", placeholder: "City" },
+  { name: "state", placeholder: "State" },
+  { name: "zipCode", placeholder: "Zip Code" },
+  { name: "dateOfArrivalUSA", placeholder: "Date of Arrival (USA)", type: "date" },
+  { name: "contactPhone", placeholder: "Contact Phone" },
+  { name: "emailAddress", placeholder: "Email Address" },
+  { name: "monthlyIncome", placeholder: "Monthly Income", type: "number" },
+  { name: "foodStamp", placeholder: "Food Stamp", type: "checkbox" },
+  { name: "cashAidAmount", placeholder: "Cash Aid Amount", type: "number" },
+  { name: "ethnicity", placeholder: "Ethnicity" },
+  { name: "foodPreference", placeholder: "Food Preference", type: "select", options: ["Halal", "Vegetarian", "Other"] },
+  { name: "childrenCount.age0to5", placeholder: "Children (Age 0-5)", type: "number" },
+  { name: "childrenCount.age6to18", placeholder: "Children (Age 6-18)", type: "number" },
+  { name: "adultsCount.age18to64", placeholder: "Adults (Age 18-64)", type: "number" },
+  { name: "servicesRequired.foodPackage", placeholder: "Food Package" },
+  { name: "servicesRequired.backpacks", placeholder: "Backpacks" },
+  { name: "servicesRequired.diapers", placeholder: "Diapers" },
+  { name: "servicesRequired.counseling", placeholder: "Counseling" },
+  { name: "servicesRequired.anyOther", placeholder: "Other Services" },
+].map(({ name, placeholder, type, options }) => (
+  <div key={name} className="flex items-center space-x-4">
+    <label className="w-1/4 text-right">{placeholder}:</label>
+    {type === "select" ? (
+      <select
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        className="p-2 bg-gray-800 rounded w-full"
+      >
+        <option value="">Select {placeholder}</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        type={type || "text"}
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        className="p-2 bg-gray-800 rounded w-full"
+      />
+    )}
+  </div>
+))}
+
 
           <div className="flex items-center space-x-4">
             <label className="w-1/4 text-right">Photo ID Type:</label>

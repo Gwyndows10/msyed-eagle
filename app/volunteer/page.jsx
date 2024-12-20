@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SidebarVolunteer from "../../components/SideBarVolunteer"
 import LockVolunteer from "@/components/lockVolunteer";
+import SearchForm from "@/components/SearchForm";
 
 export default function Volunteer() {
   const [users, setUsers] = useState([]);
@@ -77,39 +78,11 @@ const ui = (
     <main className="flex-1 p-6">
       <h1 className="text-2xl font-semibold mb-6">Recipient List</h1>
 
-      {/* Search Form */}
-      <form onSubmit={handleSearchSubmit} className="mb-6 flex gap-4">
-        <input
-          type="text"
-          name="fullName"
-          placeholder="Full Name"
-          value={searchParams.fullName}
-          onChange={handleSearchChange}
-          className="p-2 bg-gray-800 text-white rounded"
+      <SearchForm
+          searchParams={searchParams}
+          handleSearchChange={handleSearchChange}
+          handleSearchSubmit={handleSearchSubmit}
         />
-        <input
-          type="email"
-          name="emailAddress"
-          placeholder="Email"
-          value={searchParams.emailAddress}
-          onChange={handleSearchChange}
-          className="p-2 bg-gray-800 text-white rounded"
-        />
-        <input
-          type="text"
-          name="contactPhone"
-          placeholder="Phone"
-          value={searchParams.contactPhone}
-          onChange={handleSearchChange}
-          className="p-2 bg-gray-800 text-white rounded"
-        />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Search
-        </button>
-      </form>
   
       {/* Recipient List */}
       {loading ? (
