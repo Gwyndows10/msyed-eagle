@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
+import Lock from "@/components/lock";
 
 export default function CreateRecipient() {
   const [formData, setFormData] = useState({
@@ -75,9 +76,8 @@ export default function CreateRecipient() {
       alert("An error occurred while creating the recipient.");
     }
   };
-
-  return (
-    <div className="flex h-screen bg-gray-900 text-white">
+const ui = (
+  <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar />
       <main className="flex-1 p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -145,5 +145,10 @@ export default function CreateRecipient() {
         </form>
       </main>
     </div>
-  );
+)
+  
+
+  return (
+      <Lock showUI={ui} />
+    );
 }
