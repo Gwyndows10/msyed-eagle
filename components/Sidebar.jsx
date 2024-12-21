@@ -29,7 +29,7 @@ export default function Sidebar({handleResetTookFood}) {
     if (error) {
       console.error("Error logging out:", error);
     } else {
-      setUser(null); // Clear user data on logout
+      setUser(null);
     }
   };
 

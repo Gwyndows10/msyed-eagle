@@ -163,7 +163,7 @@ export default function Admin() {
         <tr
           key={user._id}
           className="hover:bg-gray-700 cursor-pointer"
-          onClick={() => handleRowClick(user)}  // Add row click functionality
+          onClick={() => handleRowClick(user)}  
         >
           <td className="px-4 py-2">{user.fullName ?? "N/A"}</td>
           <td className="px-4 py-2">{user.emailAddress ?? "N/A"}</td>
@@ -171,7 +171,7 @@ export default function Admin() {
           <td className="px-4 py-2">
             <button
               onClick={(e) => {
-                e.stopPropagation(); // Prevent row click from triggering
+                e.stopPropagation(); 
                 toggleTookFood(user._id, user.tookFood);
               }}
               className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}

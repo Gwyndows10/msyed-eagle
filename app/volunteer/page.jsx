@@ -86,30 +86,44 @@ const ui = (
   
       {/* Recipient List */}
       {loading ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <div>Error: {error}</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {users.map((user) => (
-            <div key={user._id} className="bg-gray-800 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-2">{formatField(user.fullName)}</h2>
-              <p>Email: {formatField(user.emailAddress)}</p>
-              <p>Phone: {formatField(user.contactPhone)}</p>
-              <p>Took Food: {displayBoolean(user.tookFood)}</p>
-              <button
-                  onClick={() => toggleTookFood(user._id, user.tookFood)}
-                  className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
-                >
-                  {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
-                </button>
-            </div>
-            
-          ))}
+  <div>Loading...</div>
+) : error ? (
+  <div>Error: {error}</div>
+) : (
+  <table className="min-w-full bg-gray-800 rounded-lg">
+    <thead>
+      <tr>
+        <th className="px-4 py-2 text-left">Full Name</th>
+        <th className="px-4 py-2 text-left">Email</th>
+        <th className="px-4 py-2 text-left">Phone</th>
+        <th className="px-4 py-2 text-left">Took Food</th>
+      </tr>
+    </thead>
+    <tbody>
+      {users.map((user) => (
+        <tr
+          key={user._id}
+          className="hover:bg-gray-700 cursor-pointer"  // Add row click functionality
+        >
+          <td className="px-4 py-2">{user.fullName ?? "N/A"}</td>
+          <td className="px-4 py-2">{user.emailAddress ?? "N/A"}</td>
+          <td className="px-4 py-2">{user.contactPhone ?? "N/A"}</td>
+          <td className="px-4 py-2">
+            <button
+              onClick={(e) => {
+                toggleTookFood(user._id, user.tookFood);
+              }}
+              className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+            >
+              {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
+            </button>
+          </td>
           
-        </div>
-
-      )}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
       
     </main>
   </div>
