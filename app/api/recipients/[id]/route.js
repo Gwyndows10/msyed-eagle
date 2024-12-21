@@ -102,7 +102,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
 
   await connectMongoDB();
 
