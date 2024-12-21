@@ -3,17 +3,14 @@ import Recipient from '@/models/recipient';// Ensure this import is correct
 import { NextResponse } from "next/server";
 
 export async function PUT(request) {
-  // Connect to the database
   await connectMongoDB();
 
   try {
-    // Update the `tookFood` field for all recipients
     const result = await Recipient.updateMany(
-      {},  // Empty filter to select all users
-      { $set: { tookFood: false } }  // Set `tookFood` to false for all recipients
+      {},  
+      { $set: { tookFood: false } }  
     );
 
-    // Check if any documents were modified
     if (result.modifiedCount > 0) {
       return NextResponse.json(
         { message: "TookFood status reset for all users." },

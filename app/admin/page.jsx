@@ -17,6 +17,8 @@ export default function Admin() {
   });
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [resetMessage, setResetMessage] = useState(""); 
+  const [isResetting, setIsResetting] = useState(false); 
   const router = useRouter();
 
   useEffect(() => {
@@ -93,20 +95,43 @@ export default function Admin() {
       console.error("Error in toggleTookFood:", err);
     }
   };
-  
-  const [selectedUser, setSelectedUser] = useState(null); // Track selected user
+  const handleResetTookFood = async () => {
+    setIsResetting(true);
+    setResetMessage("");
+
+    try {
+      const response = await fetch("/api/recipients/reset-took-food", {
+        method: "PUT",
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setResetMessage(result.message);
+        router.refresh();
+      } else {
+        setResetMessage(result.error || "Failed to reset TookFood status.");
+      }
+    } catch (error) {
+      console.error("Error in resetTookFood:", error);
+      setResetMessage("An error occurred while resetting TookFood status.");
+    } finally {
+      setIsResetting(false);
+    }
+  };
+  const [selectedUser, setSelectedUser] = useState(null); 
 
   const handleRowClick = (user) => {
-    setSelectedUser(user); // Set the clicked user
+    setSelectedUser(user); 
   };
   
   const handleCloseDetails = () => {
-    setSelectedUser(null); // Close user details
+    setSelectedUser(null); 
   };
   
   const ui = (
     <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar />
+      <Sidebar handleResetTookFood={handleResetTookFood}/>
 
       <main className="flex-1 p-6">
         <h1 className="text-3xl font-semibold mb-6 text-center">Recipient List</h1>
@@ -156,7 +181,10 @@ export default function Admin() {
           </td>
           <td className="px-4 py-2">
             <button
-              onClick={() => handleUpdateUser(user._id)}
+              onClick={() => {
+                e.stopPropagation();
+                handleUpdateUser(user._id)
+              }}
               className="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600"
             >
               Update
