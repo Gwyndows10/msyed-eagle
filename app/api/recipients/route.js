@@ -98,7 +98,7 @@ export async function GET(request) {
   
     try {
       const recipients = await Recipient.find(filter);
-      console.log("Filtered Recipients:", recipients);
+      //console.log("Filtered Recipients:", recipients);
   
       return NextResponse.json({
         recipients: recipients.map((recipient) => ({
