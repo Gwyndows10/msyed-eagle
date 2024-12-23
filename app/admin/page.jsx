@@ -174,7 +174,7 @@ export default function Admin() {
                 e.stopPropagation(); 
                 toggleTookFood(user._id, user.tookFood);
               }}
-              className={`px-4 py-2 rounded ${user.tookFood ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+              className={`px-4 py-2 text-sm rounded-full ${user.tookFood ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-600"}`}
             >
               {user.tookFood ? "Undo Took Food" : "Mark as Took Food"}
             </button>
@@ -205,8 +205,8 @@ export default function Admin() {
 {/* User Details Modal or Section */}
 {selectedUser && (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
-  <div className="bg-gray-800 p-6 rounded-lg w-2/3 max-w-lg relative flex flex-col items-center"> {/* Added flex and items-center */}
-    <h2 className="text-2xl font-semibold mb-4 text-center">{selectedUser.fullName}</h2> {/* Added text-center for title */}
+  <div className="bg-gray-800 p-6 rounded-lg w-2/3 max-w-lg relative flex flex-col items-center"> 
+    <h2 className="text-2xl font-semibold mb-4 text-center">{selectedUser.fullName}</h2> 
       <button
         onClick={handleCloseDetails}
         className="absolute top-2 right-2 text-white text-xl p-1 rounded-full hover:bg-gray-700"
@@ -223,7 +223,6 @@ export default function Admin() {
       <p><strong>Food Preference:</strong> {selectedUser.foodPreference ?? "N/A"}</p>
       <p><strong>Food Stamp:</strong> {selectedUser.foodStamp ? "Yes" : "No"}</p>
 
-      {/* Add more details as necessary */}
     </div>
   </div>
 )}

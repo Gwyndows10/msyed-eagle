@@ -19,10 +19,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en"
+      style={{
+  
+      }}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > 
+        style={{
+          color: 'var(--foreground)',
+          background: 'var(--background)',
+          //backgroundAttachment: 'fixed',
+          //backgroundPosition: 'center',
+          //backgroundSize: 'cover',
+          fontFamily: 'var(--font-geist-sans), Arial, Helvetica, sans-serif',
+        }}
+      >
         {children}
       </body>
     </html>
