@@ -190,8 +190,11 @@ export default function Admin() {
               Update
             </button>
             <button
-              onClick={() => handleDeleteUser(user._id)}
-              className="px-4 py-2 rounded bg-red-500 hover:bg-red-600 ml-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteUser(user._id)}
+            }
+            className="px-4 py-2 rounded bg-red-500 hover:bg-red-600 ml-2"
             >
               Delete
             </button>
