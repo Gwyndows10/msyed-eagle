@@ -31,9 +31,9 @@ export default function Admin() {
     fetchUsers();
   }, [searchQuery]);
 
-  // Handle button click to navigate to a report
+  
   const handleRedirect = (url) => {
-    router.push(url); // Next.js useRouter for navigation
+    router.push(url); 
   };
 
   const ui = (
@@ -57,29 +57,10 @@ export default function Admin() {
             onClick={() => handleRedirect('/reports/foodQuantity')}
             className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300"
           >
-            Report 2
-          </button>
-          <button
-            onClick={() => handleRedirect('/reports/report3')}
-            className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300"
-          >
-            Report 3
-          </button>
-          <button
-            onClick={() => handleRedirect('/reports/report4')}
-            className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300"
-          >
-            Report 4
-          </button>
-          <button
-            onClick={() => handleRedirect('/reports/report5')}
-            className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300"
-          >
-            Report 5
+            Food Quantities
           </button>
         </div>
 
-        {/* Optionally display loading/error messages */}
         {loading && <p>Loading users...</p>}
         {error && <p>Error: {error}</p>}
 

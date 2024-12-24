@@ -86,12 +86,6 @@ export default function Sidebar({handleResetTookFood}) {
         >
           Create Recipient
         </a>
-        <a
-          href="/volunteer"
-          className="block p-3 text-base font-medium rounded-lg bg-gray-800 hover:bg-blue-500 transition duration-200 ease-in-out"
-        >
-          Volunteer
-        </a>
         <button
             onClick={handleResetTookFood}
             className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded"

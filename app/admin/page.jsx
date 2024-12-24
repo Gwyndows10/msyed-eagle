@@ -218,13 +218,40 @@ export default function Admin() {
       </button>
 
       <p><strong>Email:</strong> {selectedUser.emailAddress ?? "N/A"}</p>
-      <p><strong>Phone:</strong> {selectedUser.contactPhone ?? "N/A"}</p>
-      <p><strong>Address:</strong> {selectedUser.address ?? "N/A"}</p>
-      <p><strong>City:</strong> {selectedUser.city ?? "N/A"}</p>
-      <p><strong>State:</strong> {selectedUser.state ?? "N/A"}</p>
-      <p><strong>Zip Code:</strong> {selectedUser.zipCode ?? "N/A"}</p>
-      <p><strong>Food Preference:</strong> {selectedUser.foodPreference ?? "N/A"}</p>
-      <p><strong>Food Stamp:</strong> {selectedUser.foodStamp ? "Yes" : "No"}</p>
+<p><strong>Phone:</strong> {selectedUser.contactPhone ?? "N/A"}</p>
+<p><strong>Address:</strong> {selectedUser.address ?? "N/A"}</p>
+<p><strong>City:</strong> {selectedUser.city ?? "N/A"}</p>
+<p><strong>State:</strong> {selectedUser.state ?? "N/A"}</p>
+<p><strong>Zip Code:</strong> {selectedUser.zipCode ?? "N/A"}</p>
+<p><strong>Food Preference:</strong> {selectedUser.foodPreference ?? "N/A"}</p>
+<p><strong>Food Stamp:</strong> {selectedUser.foodStamp ? "Yes" : "No"}</p>
+<p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth ? new Date(selectedUser.dateOfBirth).toLocaleDateString() : "N/A"}</p>
+<p><strong>Photo ID Number:</strong> {selectedUser.photoIDNumber ?? "N/A"}</p>
+<p><strong>Photo ID Type:</strong> {selectedUser.photoIDType ?? "N/A"}</p>
+<p><strong>Date of Arrival to USA:</strong> {selectedUser.dateOfArrivalUSA ? new Date(selectedUser.dateOfArrivalUSA).toLocaleDateString() : "N/A"}</p>
+<p><strong>Monthly Income:</strong> {selectedUser.monthlyIncome ? `$${selectedUser.monthlyIncome.toLocaleString()}` : "N/A"}</p>
+<p><strong>Cash Aid Amount:</strong> {selectedUser.cashAidAmount ? `$${selectedUser.cashAidAmount.toLocaleString()}` : "N/A"}</p>
+<p><strong>Children Count (Ages 0-5):</strong> {selectedUser.childrenCount?.age0to5 ?? "N/A"}</p>
+<p><strong>Children Count (Ages 6-18):</strong> {selectedUser.childrenCount?.age6to18 ?? "N/A"}</p>
+<p><strong>Adults Count (Ages 18-64):</strong> {selectedUser.adultsCount?.age18to64 ?? "N/A"}</p>
+<p><strong>Ethnicity:</strong> {selectedUser.ethnicity ?? "N/A"}</p>
+<p><strong>Services Required:</strong></p>
+<ul>
+  <li><strong>Food Package:</strong> {selectedUser.servicesRequired?.foodPackage ?? "N/A"}</li>
+  <li><strong>Backpacks:</strong> {selectedUser.servicesRequired?.backpacks ?? "N/A"}</li>
+  <li><strong>Diapers:</strong> {selectedUser.servicesRequired?.diapers ?? "N/A"}</li>
+  <li><strong>Counseling:</strong> {selectedUser.servicesRequired?.counseling ?? "N/A"}</li>
+  <li><strong>Other:</strong> {selectedUser.servicesRequired?.anyOther ?? "N/A"}</li>
+</ul>
+<p><strong>Took Food:</strong> {selectedUser.tookFood ? "Yes" : "No"}</p>
+<p><strong>Food History:</strong></p>
+<ul>
+  {selectedUser.tookFoodHistory?.map((entry, index) => (
+    <li key={index}>
+      <strong>Date:</strong> {new Date(entry.date).toLocaleDateString()} - <strong>Status:</strong> {entry.status = "Took Food" }
+    </li>
+  ))}
+</ul>
 
     </div>
   </div>

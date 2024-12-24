@@ -63,28 +63,29 @@ export async function PUT(request, { params }) {
       ethnicity,
       foodPreference,
       servicesRequired,
-      tookFood,  // Include the updated tookFood status here
+      tookFood,  
     };
 
     await Recipient.findByIdAndUpdate(id, updateData);
 
-    // Log food history only when tookFood goes from 'false' to 'true'
     if (tookFoodChanged && isFoodTakenNow && wasFoodNotTakenPreviously) {
-      await Recipient.findByIdAndUpdate(id, {
-        $push: {
-          tookFoodHistory: {
-            date: new Date(),
-            status: tookFood,  // Add new tookFood status to the history
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); 
+
+      const existingHistory = recipient.tookFoodHistory.find(
+        (entry) => new Date(entry.date).setHours(0, 0, 0, 0) === today.getTime()
+      );
+
+      if (!existingHistory) {
+        await Recipient.findByIdAndUpdate(id, {
+          $push: {
+            tookFoodHistory: {
+              date: today,  
+              status: tookFood,  
+            },
           },
-        },
-      });
-    }
-    if (tookFoodChanged && !isFoodTakenNow && !wasFoodNotTakenPreviously) {
-      await Recipient.findByIdAndUpdate(id, {
-        $pop: {
-          tookFoodHistory: -1  
-        },
-      });
+        });
+      }
     }
     
 

@@ -2,7 +2,7 @@
 
 import localFont from "next/font/local";
 import "./globals.css";
-import { createTheme, NextUIProvider } from '@nextui-org/react';
+//import { createTheme, NextUIProvider } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 
 const geistSans = localFont({
@@ -66,9 +66,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <NextUIProvider theme={theme}>
+        
           {children}  
-        </NextUIProvider>
+        
       </body>
     </html>
   );
