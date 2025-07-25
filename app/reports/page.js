@@ -1,74 +1,14 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Sidebar from "../../components/Sidebar";
-import Lock from "@/components/lock";
-import SearchForm from "@/components/SearchForm";  // Assuming you have a search form component
-
-export default function Admin() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [resetMessage, setResetMessage] = useState(""); 
-  const [isResetting, setIsResetting] = useState(false); 
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch(`/api/recipients${searchQuery}`);
-        const data = await response.json();
-        setUsers(data.recipients || []);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, [searchQuery]);
-
-  
-  const handleRedirect = (url) => {
-    router.push(url); 
-  };
-
-  const ui = (
-    <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar />
-
-      <main className="flex-1 p-6">
-        <h1 className="text-3xl font-semibold mb-6 text-center">
-          Which Report would you like?
-        </h1>
-
-        {/* Report Buttons Section */}
-        <div className="flex justify-center gap-4 flex-wrap">
-          <button
-            onClick={() => handleRedirect('/reports/ethnicities')}
-            className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300"
-          >
-            Ethnicities
-          </button>
-          <button
-            onClick={() => handleRedirect('/reports/foodQuantity')}
-            className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300"
-          >
-            Food Quantities
-          </button>
-        </div>
-
-        {loading && <p>Loading users...</p>}
-        {error && <p>Error: {error}</p>}
-
-      </main>
-    </div>
-  );
-
+export default function ReportsPage() {
   return (
-    <Lock showUI={ui} />
+    <section className="flex flex-col items-center justify-center min-h-[60vh] text-center gap-8">
+      <h1 className="text-3xl font-bold">Reports</h1>
+      <p className="text-lg text-neutral-600 dark:text-neutral-300 max-w-xl">
+        Access and generate detailed reports to gain insights into recipients, food distribution, and more.
+      </p>
+      <div className="flex flex-wrap gap-4 justify-center">
+        <a href="/reports/ethnicities" className="px-6 py-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">Ethnicities Report</a>
+        <a href="/reports/foodQuantity" className="px-6 py-3 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition">Food Quantity Report</a>
+      </div>
+    </section>
   );
-}
+} 

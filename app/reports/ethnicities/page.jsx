@@ -1,80 +1,78 @@
-
 "use client";
+import { useEffect, useState } from "react";
+import { Pie } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend
+} from "chart.js";
 
-import React, { useEffect, useState } from "react";
-import BarChart from "@/components/BarChart/page";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-const Ethnicities = () => {
-  const [chartData, setChartData] = useState(null);
+export default function EthnicitiesReport() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchEthnicityData = async () => {
+    async function fetchData() {
+      setLoading(true);
       try {
-        const response = await fetch("/api/recipients/ethnicities"); // Update with the correct API endpoint
-        const data = await response.json();
-
-        const processedData = {
-          labels: data.map((item) => item._id || "Unknown"), // Ethnicity names (or "Unknown" for missing values)
-          datasets: [
-            {
-              label: "Ethnicity Distribution",
-              data: data.map((item) => item.count), // Count of each ethnicity
-              backgroundColor: [
-                "rgba(75, 192, 192, 0.5)",
-                "rgba(255, 99, 132, 0.5)",
-                "rgba(54, 162, 235, 0.5)",
-                "rgba(255, 206, 86, 0.5)",
-                "rgba(153, 102, 255, 0.5)",
-              ],
-              borderColor: [
-                "rgba(75, 192, 192, 1)",
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-                "rgba(153, 102, 255, 1)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        };
-
-        setChartData(processedData);
-      } catch (error) {
-        console.error("Error fetching ethnicity data:", error);
+        const res = await fetch("/api/recipients/ethnicities");
+        if (!res.ok) throw new Error("Failed to fetch data");
+        const result = await res.json();
+        setData(result);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    };
-
-    fetchEthnicityData();
+    }
+    fetchData();
   }, []);
 
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Ethnicity Distribution",
-      },
-    },
-  };
+  let chartData = null;
+  if (data && Array.isArray(data) && data.length > 0) {
+    chartData = {
+      labels: data.map((item) => item._id || "Unknown"),
+      datasets: [
+        {
+          label: "Recipients",
+          data: data.map((item) => item.count),
+          backgroundColor: [
+            "#2563eb",
+            "#22c55e",
+            "#f59e42",
+            "#e11d48",
+            "#a21caf",
+            "#facc15",
+            "#14b8a6",
+            "#64748b"
+          ],
+        },
+      ],
+    };
+  }
 
   return (
-    <div
-      style={{
-        
-        textAlign: "center",
-      }}
-    >
-      <h1 text-align>Ethnicities</h1>
-      {chartData ? (
-        <BarChart data={chartData} options={chartOptions} />
-      ) : (
-        <p>Loading chart...</p>
-      )}
-    </div>
+    <section className="flex flex-col items-center justify-center min-h-[60vh] text-center gap-8">
+      <h1 className="text-3xl font-bold">Ethnicities Report</h1>
+      <p className="text-lg text-neutral-600 dark:text-neutral-300 max-w-xl">
+        Visualize the distribution of recipients by ethnicity. Use this report to understand community demographics and inform outreach efforts.
+      </p>
+      <div className="w-full max-w-2xl mt-8">
+        <div className="rounded border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-6 shadow flex items-center justify-center min-h-[300px]">
+          {loading && <span className="text-neutral-400">Loading...</span>}
+          {error && <span className="text-red-500">{error}</span>}
+          {!loading && !error && chartData && (
+            <Pie data={chartData} />
+          )}
+          {!loading && !error && !chartData && (
+            <span className="text-neutral-400">No data available.</span>
+          )}
+        </div>
+      </div>
+    </section>
   );
-};
-
-export default Ethnicities;
+} 

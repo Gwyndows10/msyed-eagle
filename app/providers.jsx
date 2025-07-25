@@ -1,11 +1,10 @@
-'use client';
-
-import { NextUIProvider } from '@nextui-org/react';
+"use client";
+import { ClerkProvider } from '@clerk/nextjs';
 
 export function Providers({ children }) {
   return (
-    <NextUIProvider>
+    <ClerkProvider publishableKey="pk_test_Y29taWMtcGxhdHlwdXMtNDEuY2xlcmsuYWNjb3VudHMuZGV2JA">
       {children}
-    </NextUIProvider>
+    </ClerkProvider>
   );
-}
+} 
