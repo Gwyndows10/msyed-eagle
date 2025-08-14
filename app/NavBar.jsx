@@ -24,6 +24,7 @@ export default function NavBar() {
             Sign In
           </button>
         </SignInButton>
+        
       </div>
     );
   }
@@ -32,6 +33,7 @@ export default function NavBar() {
     <nav className="w-full bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-6 py-4 flex items-center justify-between">
       {/* Left: Avatar with dropdown */}
       <div className="flex items-center gap-4">
+      
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer">
@@ -40,14 +42,27 @@ export default function NavBar() {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <div className="px-3 py-2 text-sm text-muted-foreground">
+            <div className="px-3 py-1 text-sm text-muted-foreground capitalize">
               {user?.fullName || user?.primaryEmailAddress?.emailAddress}
+              
             </div>
+            {/*<div className="px-3 py-1 text-sm text-muted-foreground capitalize">
+            {user.publicMetadata.role}
+              
+            </div>*/}
             <SignOutButton>
-              <DropdownMenuItem className="text-red-600 cursor-pointer">Sign Out</DropdownMenuItem>
+              <DropdownMenuItem className="px-3 py-1 text-red-600 cursor-pointer">Sign Out</DropdownMenuItem>
             </SignOutButton>
           </DropdownMenuContent>
         </DropdownMenu>
+        {user?.publicMetadata?.role && (
+          <div className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md">
+            
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300 capitalize">
+              {user.publicMetadata.role}
+            </span>
+          </div>
+        )}
       </div>
       {/* Center: Dashboard title links to dashboard */}
       <Link href="/dashboard" className="text-xl font-bold tracking-tight hover:underline">Dashboard</Link>
